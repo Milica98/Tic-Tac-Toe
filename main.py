@@ -3,9 +3,9 @@ import random
 
 def display_matrix(matrix):
     print(f" {matrix[0][0]} | {matrix[0][1]} | {matrix[0][2]} \n"
-          f"------------\n"
+          "------------\n"
           f" {matrix[1][0]} | {matrix[1][1]} | {matrix[1][2]} \n"
-          f"------------\n"
+          "------------\n"
           f" {matrix[2][0]} | {matrix[2][1]} | {matrix[2][2]} \n")
 
 
@@ -90,9 +90,10 @@ while not end_game:
         if is_winner(game_matrix, current_player):
             print(f"##### Winner is player {current_player} #####")
         else:
-            print(f"##### No winners in this game #####")
+            print("##### No winners in this game #####")
 
-        play_again = input("Type 'Y' if you want to play again or anything else to exit the game: ")
+        play_again = input("Type 'Y' if you want to play again"
+                           "or anything else to exit the game: ")
 
         if play_again != 'Y':
             end_game = True
