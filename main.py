@@ -1,5 +1,6 @@
 import random
 
+
 def display_matrix(matrix):
     print(f" {matrix[0][0]} | {matrix[0][1]} | {matrix[0][2]} \n"
           "------------\n"
