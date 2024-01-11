@@ -1,4 +1,4 @@
-import random
+from game_engine import GameEngine
 
 
 def display_matrix(matrix):
@@ -18,7 +18,7 @@ def get_row():
         except ValueError:
             print("Wrong value!!")
         else:
-            return value - 1
+            return value
 
 
 def get_column():
@@ -30,79 +30,38 @@ def get_column():
         except ValueError:
             print("Wrong value!!")
         else:
-            return value - 1
+            return value
 
 
-def is_winner(matrix, player):
-    same_d1, same_d2 = True, True
-    for i in range(0, 3):
-        if [player, player, player] in [matrix[i], matrix[:][i]]:
-            return True
+game = GameEngine()
 
-        if matrix[i][i] != player:
-            same_d1 = False
+display_matrix(game.matrix)
 
-        if matrix[i][2-i] != player:
-            same_d2 = False
-    if same_d1 or same_d2:
-        return True
-    return False
-
-
-def get_empty_matrix():
-    return [
-        [' ', ' ', ' '],
-        [' ', ' ', ' '],
-        [' ', ' ', ' ']
-    ]
-
-
-def is_matrix_full(matrix):
-    if any(' ' in array for array in matrix):
-        return False
-    else:
-        return True
-
-
-players = ['X', 'O']
-
-current_player = players[random.randint(0, 1)]
-game_matrix = get_empty_matrix()
-
-display_matrix(game_matrix)
-
-end_game = False
-while not end_game:
-    print(f"Next player is {current_player}")
+while not game.end_game:
+    print(f"Next player is {game.current_player}")
 
     while True:
         row = get_row()
         column = get_column()
-        if game_matrix[row][column] != ' ':
-            print(f"Cell [{row+1}][{column+1}] is occupied")
+        if game.is_cell_occupied(row, column):
+            print(f"Cell [{row}][{column}] is occupied")
         else:
             break
 
-    game_matrix[row][column] = current_player
-    display_matrix(game_matrix)
+    game.set_cell(row=row, column=column)
+    display_matrix(game.matrix)
 
-    if is_winner(game_matrix, current_player) or is_matrix_full(game_matrix):
-        if is_winner(game_matrix, current_player):
-            print(f"##### Winner is player {current_player} #####")
+    if game.end_game:
+        if game.is_winner():
+            print(f"##### Winner is player {game.current_player} #####")
         else:
             print("##### No winners in this game #####")
 
-        play_again = input("Type 'Y' if you want to play again"
+        play_again = input("Type 'Y' if you want to play again "
                            "or anything else to exit the game: ")
 
-        if play_again != 'Y':
-            end_game = True
-        else:
-            current_player = players[random.randint(0, 1)]
-            game_matrix = get_empty_matrix()
-            display_matrix(game_matrix)
+        if play_again == 'Y':
+            game.initialize()
+            display_matrix(game.matrix)
     else:
-        if current_player == 'X':
-            current_player = 'O'
-        else:
-            current_player = 'X'
+        game.set_next_player()
