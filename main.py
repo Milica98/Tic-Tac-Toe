@@ -33,14 +33,37 @@ def get_column():
             return value
 
 
-game = GameEngine()
-
-display_matrix(game.matrix)
-
-while not game.end_game:
-    print(f"Next player is {game.current_player}")
-
+def get_num_of_players():
+    print("🔵 Tic Tac Toe game can play 2 players "
+          "but also player against computer 🔵")
     while True:
+        try:
+            value = int(input("Type number of players (1, 2):"))
+            if value not in [1, 2]:
+                raise ValueError
+        except ValueError:
+            print("Wrong value!!")
+        else:
+            return value
+
+
+def start_new_game(game):
+    print('\033c', end='')
+    number_of_players = get_num_of_players()
+    if number_of_players == 1:
+        game.new_game(is_one_player=True)
+    else:
+        game.new_game()
+    display_matrix(game.get_matrix())
+
+
+game = GameEngine()
+start_new_game(game)
+
+while not game.is_end_game():
+    print(f"Next player is {game.get_current_player()}")
+
+    while not game.is_computer_current_player():
         row = get_row()
         column = get_column()
         if game.is_cell_occupied(row, column):
@@ -48,20 +71,22 @@ while not game.end_game:
         else:
             break
 
-    game.set_cell(row=row, column=column)
-    display_matrix(game.matrix)
+    if game.is_computer_current_player():
+        game.set_cell()
+    else:
+        game.set_cell(row=row, column=column)
+    display_matrix(game.get_matrix())
 
-    if game.end_game:
+    if game.is_end_game():
         if game.is_winner():
-            print(f"##### Winner is player {game.current_player} #####")
+            print(f"🟢 💪 Winner is player {game.get_current_player()} 💪 🟢")
         else:
-            print("##### No winners in this game #####")
+            print("🟡 No winners in this game 🟡")
 
         play_again = input("Type 'Y' if you want to play again "
                            "or anything else to exit the game: ")
 
-        if play_again == 'Y':
-            game.initialize()
-            display_matrix(game.matrix)
-    else:
-        game.set_next_player()
+        if play_again in ['Y', 'y']:
+            start_new_game(game)
+
+print("🔴 GAME END 🔴")
