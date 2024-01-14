@@ -56,7 +56,7 @@ class GameEngine:
             return True
         return False
 
-    def __get_empty_matrix(self):
+    def __get_empty_matrix():
         return [
             [' ', ' ', ' '],
             [' ', ' ', ' '],
