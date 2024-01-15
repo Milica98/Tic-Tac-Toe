@@ -1,13 +1,21 @@
 import random
 
 
+def get_empty_matrix():
+    return [
+        [' ', ' ', ' '],
+        [' ', ' ', ' '],
+        [' ', ' ', ' ']
+    ]
+
+
 class GameEngine:
     def __init__(self):
         super().__init__()
         self.__players = ['X', 'O']
 
     def new_game(self, is_one_player=False):
-        self.__matrix = self.__get_empty_matrix()
+        self.__matrix = get_empty_matrix()
         self.__current_player = self.__players[random.randint(0, 1)]
         self.__end_game = False
         self.__is_one_player_mode = is_one_player
@@ -55,13 +63,6 @@ class GameEngine:
         if same_d1 or same_d2:
             return True
         return False
-
-    def __get_empty_matrix():
-        return [
-            [' ', ' ', ' '],
-            [' ', ' ', ' '],
-            [' ', ' ', ' ']
-        ]
 
     def __is_matrix_full(self):
         return not any(' ' in array for array in self.__matrix)
